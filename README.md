@@ -6,7 +6,7 @@
     * 安装依赖包 `pip install xlsxwriter`
 3. 运行程序
     
-    将`calc.py`脚本文件拷贝到作答目录中运行。通过以下命令运行程序，Windows环境也可双击`calc.py`直接运行。
+    将`calc.py`脚本文件拷贝到作答目录中。通过以下命令运行程序，Windows环境也可双击`calc.py`直接运行。
     ```sh
     # [encoding]为文本文件编码，可省略，缺省为'GB2312'
     python calc.py [encoding]
