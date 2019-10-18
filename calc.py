@@ -54,7 +54,7 @@ def main():
         for question in stu_multiple:
             answer = list(
                 filter(lambda que: que["no"] == question["no"], answer_multiple))
-            if answer and answer.pop()["answer"].upper() == question["answer"]:
+            if sorted(answer and answer.pop()["answer"].upper()) == sorted(question["answer"]):
                 stu_grade += 4
 
         grades.append({"name": os.path.splitext(
