@@ -43,31 +43,44 @@ def main():
 
     answer_single, answer_multiple = _readTxt(answer_file)
     grades = []
+
     for txt in txts:
+        questions = {}
         stu_grade = 0
         stu_single, stu_multiple = _readTxt(txt)
         for question in stu_single:
             answer = list(
                 filter(lambda que: que["no"] == question["no"], answer_single))
             if answer and answer.pop()["answer"].upper() == question["answer"]:
+                questions[question["no"]] = 3
                 stu_grade += 3
+
         for question in stu_multiple:
             answer = list(
                 filter(lambda que: que["no"] == question["no"], answer_multiple))
             if sorted(answer and answer.pop()["answer"].upper()) == sorted(question["answer"]):
+                questions[question["no"]] = 4
                 stu_grade += 4
 
         grades.append({"name": os.path.splitext(
-            os.path.basename(txt))[0], "grade": stu_grade})
+            os.path.basename(txt))[0], "grade": stu_grade, "questions": questions})
 
+    questions_cnt = len(answer_single) + len(answer_multiple)
     with xlsxwriter.Workbook("report.xlsx") as book:
         sheet = book.add_worksheet()
         sheet.write("A1", "姓名")
         sheet.write("B1", "成绩")
+        for question_no in range(questions_cnt):
+            sheet.write("{}1".format(chr(67 + question_no)), question_no + 1)
+
         row_num = 2
         for g in grades:
             sheet.write("A{}".format(row_num), g["name"])
             sheet.write("B{}".format(row_num), g["grade"])
+            for question_no in range(questions_cnt):
+                sg = g['questions'].get(str(question_no + 1))
+                sheet.write("{}{}".format(
+                    chr(67 + question_no), row_num), sg if sg else 0)
             row_num += 1
 
     print("Done")
